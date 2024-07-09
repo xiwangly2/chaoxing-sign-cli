@@ -1,0 +1,44 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+
+spawn node ./apps/server/build/monitor.js
+
+expect {
+    "选择用户" {
+        expect {
+            "your-phone-number" {
+                send "\r"
+                expect "是否用本地缓存的签到信息?" {
+                    send "yes\r"
+                }
+            }
+            "手动登录" {
+                send "\r"
+                expect "手机号" {
+                    send "your-phone-number\r"
+                }
+                expect "密码" {
+                    send "your-password\r"
+                }
+                expect "位置参数预设" {
+                    send "经度,维度/详细地址\r"
+                }
+                expect "是否继续添加" {
+                    send "no\r"
+                }
+                expect "签到延时" {
+                    send "0\r"
+                }
+                expect "是否启用邮件通知?" {
+                    send "no\r"
+                }
+                expect "是否连接到go-cqhttp服务?" {
+                    send "no\r"
+                }
+            }
+        }
+    }
+}
+
+expect eof

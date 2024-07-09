@@ -125,6 +125,33 @@ server {
 
 ```
 
+### 解决方案III
+
+无头模式运行监听，这相当于一直运行 `pnpm monitor`，有短期封号的风险，但是可以保证你的签到不会漏掉。
+
+这个方法不需要你的服务器有公网IP，但是你必须有一个可以访问的服务器，这个服务器可以是你的电脑，也可以是你的树莓派，也可以是你的VPS。
+
+先在 `auto_signin.exp` 中修改你的账号密码，以及一些选项，更多情况就你们自己参考 expect 的文档了。
+
+先克隆项目到本地，然后构建镜像
+
+```shell
+docker build -t my-auto-signin -f headless.Dockerfile .
+```
+
+运行容器
+
+```shell
+docker run -d --name=auto-signin-container --restart=always my-auto-signin
+```
+
+查看日志
+
+```shell
+docker logs -f auto-signin-container
+```
+
+
 ## 收尾
 
 上面两种方案你只需要采用一种即可，在这之后你也许得注意下面的内容：
